@@ -10,7 +10,11 @@ class UserController < ApplicationController
     end 
 
     get '/users/signup' do
-        erb :'users/signup'
+        if !session[:user_id]
+            erb :'users/new'
+        else
+            redirect '/index'
+        end 
     end 
 
     post '/users/login' do 
