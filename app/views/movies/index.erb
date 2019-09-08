@@ -4,6 +4,7 @@
     <ul>
         <li><%= "Movie Title: #{m.title}" %></li>
         <li><%= "Genre: #{m.genre}" %></li>
-        <a href="/movies/<%= m.id %>">Edit</a>
+        <a href="/movies/<%= m.id %>/edit">Edit</a>
+        <a href="/movies/<%= m.id %>/delete">Delete</a>
     </ul>
 <% end %>
