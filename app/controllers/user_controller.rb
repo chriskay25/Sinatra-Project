@@ -1,15 +1,22 @@
 class UserController < ApplicationController
 
-    get '/users/login' do
-        erb :'/users/login'
+    get '/login' do
+        @failed = false
+        erb :'users/login'
     end 
 
-    post '/users/login' do 
+    post '/login' do 
         user = User.find_by(username: params[:username])
-        session[:user_id] = user.id
+        if !!user && user.authenticate(params[:password])
+            session[:user_id] = user.id
+            erb :'movies/index'
+        else
+            @failed = true
+            erb :'users/login'
+        end 
     end 
 
-    get '/users/signup' do
+    get '/signup' do
         if !session[:user_id]
             erb :'users/new'
         else
@@ -17,9 +24,16 @@ class UserController < ApplicationController
         end 
     end 
 
-    post '/users/login' do 
-        user = User.create(username: params[:username], password: params[:password])
-        session[:user_id] = user.id 
+    post '/signup' do 
+        if params[:username] == "" || params[:password] == ""
+            redirect to '/signup'
+        else
+            @user = User.create(username: params[:username], password: params[:password])
+            session[:user_id] = @user.id 
+            # need to redirect the user somewhere once they're signed up.
+            erb :'movies/index'
+        end 
     end 
+
 
 end 
