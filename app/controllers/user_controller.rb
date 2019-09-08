@@ -9,7 +9,7 @@ class UserController < ApplicationController
         user = User.find_by(username: params[:username])
         if !!user && user.authenticate(params[:password])
             session[:user_id] = user.id
-            erb :'movies/index'
+            redirect '/movies'
         else
             @failed = true
             erb :'users/login'
@@ -20,7 +20,7 @@ class UserController < ApplicationController
         if !session[:user_id]
             erb :'users/new'
         else
-            redirect '/index'
+            redirect 'movie/index'
         end 
     end 
 
