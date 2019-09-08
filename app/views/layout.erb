@@ -9,6 +9,9 @@
 </head>
 <body>
     <h1>CK Sinatra App</h1>
+    <% if logged_in? %>
+        <p><a href="/movies">Movies</a></p>
+    <% end %>
     <%= yield %>
 </body>
 </html>

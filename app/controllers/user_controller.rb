@@ -1,6 +1,18 @@
 class UserController < ApplicationController
 
+    get '/users/:id' do
+        redirect '/' if !logged_in?
+
+        @user = User.find(params[:id])
+        if !@user.nil? && @user == current_user
+            erb :'users/show'
+        else
+            redirect '/'
+        end
+    end 
+
     get '/login' do
+        # redirect '/movies' if logged_in? 
         @failed = false
         erb :'users/login'
     end 
@@ -20,7 +32,7 @@ class UserController < ApplicationController
         if !session[:user_id]
             erb :'users/new'
         else
-            redirect 'movie/index'
+            redirect ''
         end 
     end 
 
@@ -31,7 +43,16 @@ class UserController < ApplicationController
             @user = User.create(username: params[:username], password: params[:password])
             session[:user_id] = @user.id 
             # need to redirect the user somewhere once they're signed up.
-            erb :'movies/index'
+            erb :'users/show'
+        end 
+    end 
+
+    get '/logout' do 
+        if session[:user_id] != nil
+            session.destroy
+            redirect '/'
+        else
+            redirect '/'
         end 
     end 
 
